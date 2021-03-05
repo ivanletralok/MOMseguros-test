@@ -2092,14 +2092,15 @@ Vue.use(vue_paginate__WEBPACK_IMPORTED_MODULE_1___default.a);
       idedit: "",
       paginate: ["posts"],
       page: 1,
-      pages: 1
+      pages: 1,
+      url: window.location.href
     };
   },
   methods: {
     getPost: function getPost() {
       var _this = this;
 
-      axios.get('http://127.0.0.1:8000/api/post').then(function (response) {
+      axios.get(this.url + '/api/post').then(function (response) {
         console.log(response);
         _this.array = response.data;
       })["catch"](function (error) {
@@ -2135,7 +2136,7 @@ Vue.use(vue_paginate__WEBPACK_IMPORTED_MODULE_1___default.a);
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios["delete"]('http://127.0.0.1:8000/api/post/' + id).then(function (response) {
+                return axios["delete"](_this3.url + '/api/post/' + id).then(function (response) {
                   _this3.array = _this3.array.filter(function (post) {
                     return post.id != id;
                   });
@@ -2165,7 +2166,7 @@ Vue.use(vue_paginate__WEBPACK_IMPORTED_MODULE_1___default.a);
       // solo acepta este limite de id o alguno de los existentes para actualizar
       // porque si sen envía el random sale error en la respuesta por parte de ellos.
 
-      axios.put('http://127.0.0.1:8000/api/post/101', obj).then(function (response) {
+      axios.put(this.url + '/api/post/101', obj).then(function (response) {
         var postIndex = _this4.array.findIndex(function (post) {
           return post.id == _this4.idedit;
         });
@@ -2186,7 +2187,7 @@ Vue.use(vue_paginate__WEBPACK_IMPORTED_MODULE_1___default.a);
         title: this.titleCrear,
         body: this.bodyCrear
       };
-      axios.post('http://127.0.0.1:8000/api/posts', obj).then(function (response) {
+      axios.post(this.url + '/api/posts', obj).then(function (response) {
         // Se establece un id random porque jsonplaceholder siempre devuelve como id 101
         _this5.array = [obj].concat(_toConsumableArray(_this5.array)); //response.data.response
 
