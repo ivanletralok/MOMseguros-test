@@ -127,7 +127,7 @@
 
         methods: {
             getPost() {
-                axios.get(this.url + '/api/post')
+                axios.get(this.url + 'api/post')
                     .then((response) => {
                         console.log(response)
                         this.array = response.data
@@ -143,7 +143,7 @@
                 this.body = post.body
             },
             async eliminar(id) {
-                await axios.delete(this.url + '/api/post/' + id)
+                await axios.delete(this.url + 'api/post/' + id)
                     .then((response) => {
                         this.array = this.array.filter(post => post.id != id);
                         /*if (response.data.status == 200) {
@@ -164,7 +164,7 @@
                     // Siempre se envía 101 para simular una actualización porque jsonplaceholder
                     // solo acepta este limite de id o alguno de los existentes para actualizar
                     // porque si sen envía el random sale error en la respuesta por parte de ellos.
-                axios.put(this.url + '/api/post/101', obj)
+                axios.put(this.url + 'api/post/101', obj)
                     .then((response) => {
                         const postIndex = this.array.findIndex(post => post.id == this.idedit);
                         this.array[postIndex].title = obj.title;
@@ -183,7 +183,7 @@
                     title: this.titleCrear,
                     body: this.bodyCrear
                 }
-                axios.post(this.url + '/api/posts', obj)
+                axios.post(this.url + 'api/posts', obj)
                     .then((response) => {
                         // Se establece un id random porque jsonplaceholder siempre devuelve como id 101
                         this.array = [obj, ...this.array]; //response.data.response
