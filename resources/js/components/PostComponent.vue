@@ -1,13 +1,15 @@
 <template>
     <div class="container">
         <h2>POST</h2>
-        <button v-if="array != ''" type="button" class="btn btn-primary" data-bs-toggle="modal"
-            data-bs-target="#modalcrear" data-bs-whatever="@mdo">Crear Post</button>
+        
+            <crear-component v-if="array != ''"  @recibir="guardarPost" :load="load" />
 
             <button v-if="array== ''" class="btn btn-dark" type="button" disabled>
                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                 <span class="visually-hidden">Cargando...</span>
             </button>
+
+          
             <paginate name="posts" :list="array" :per="20">
                 <div class="row">
                     <div v-for="post in paginated('posts')" :key="post.id" class="col-md-6">
@@ -66,32 +68,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modalcrear" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Crear Post</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="recipient-name" class="col-form-label">Titulo:</label>
-                                <input v-model="titleCrear" type="text" class="form-control" id="recipient-name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="message-text" class="col-form-label">Descripcion:</label>
-                                <textarea v-model="bodyCrear" class="form-control" id="message-text"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button @click.prevent='guardarPost()' type="button" class="btn btn-primary">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 
 
@@ -104,6 +81,7 @@
 
     export default {
 
+       
         mounted() {
             this.getPost();
             console.log('Component mounted.')
@@ -114,11 +92,12 @@
                 array: [],
                 body: "",
                 title: "",
-                bodyCrear: "",
-                titleCrear: "",
+
+                load:false,
+               
                 idedit: "",
                 paginate: ["posts"],
-
+                recibir:null,
                 page: 1,
                 pages: 1,
                 url: window.location.href
@@ -126,6 +105,7 @@
         },
 
         methods: {
+        
             getPost() {
                 axios.get(this.url + 'api/post')
                     .then((response) => {
@@ -176,25 +156,32 @@
                     });
 
             },
-            guardarPost() {
+            guardarPost(value) {
                 let obj = {
                     id: this.ID(),
                     userId: 1,
-                    title: this.titleCrear,
-                    body: this.bodyCrear
+                    title: value.titleCrear ,
+                    body: value.bodyCrear
                 }
+
                 axios.post(this.url + 'api/posts', obj)
                     .then((response) => {
+
                         // Se establece un id random porque jsonplaceholder siempre devuelve como id 101
                         this.array = [obj, ...this.array]; //response.data.response
+                        this.load = false
                         $("#modalcrear").modal("hide");
-                        this.bodyCrear = "";
-                        this.titleCrear = ""
+
+                        value.titleCrear= "";
+                        value.bodyCrear = ""
                     })
                     .catch((error) => {
                         console.log(error);
-                    });
+                    }); 
+
+
             },
+
             ID() {
                 return '_' + Math.random().toString(36).substr(2, 9);
             }
