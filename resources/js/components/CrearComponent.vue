@@ -1,10 +1,10 @@
 <template>
     <div class="container">
        
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+        <button @click.prevent="swit" type="button" class="btn btn-primary" data-bs-toggle="modal"
             data-bs-target="#modalcrear" data-bs-whatever="@mdo">Crear Post</button>
 
-            
+             
 
 
         <div class="modal fade" id="modalcrear" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -27,7 +27,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button v-if="load == true" class="btn btn-dark" type="button" disabled>
+                        <button v-if="!lod" class="btn btn-dark" type="button" disabled>
                             <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                             <span class="visually-hidden">Cargando...</span>
                         </button>
@@ -43,34 +43,45 @@
 </template>
 
 <script>
-    
     export default {
-        props:{
-                load:false
-            },
+        props: {
+            load: true
+        },
 
         mounted() {
             console.log('Component mounted.')
         },
-    
+
         data() {
             return {
-                datos :{
+                datos: {
                     bodyCrear: null,
                     titleCrear: null,
-                }
-                ,
-                 loades:false,
-                array:[],
+                },
+                lod: true,
+                cont: 0,
+                array: [],
             }
         },
 
-        methods:{
-           guardarPost(){
-               this.$emit('recibir', this.datos)
-               console.log(this.loades , "loades")
-               this.load = true
-           }
+        methods: {
+            guardarPost() {
+                if(this.cont == 1){
+                    this.lod = false
+                }
+                this.$emit('recibir', this.datos)
+                
+
+            },
+            swit(){
+                this.cont++
+                if(this.cont != 0){
+                    this.lod = true
+                    this.cont = 1
+                }
+
+                console.log("clic a swirt")
+            }
 
         }
     }

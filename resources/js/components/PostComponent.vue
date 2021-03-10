@@ -1,8 +1,7 @@
 <template>
     <div class="container">
         <h2>POST</h2>
-        
-            <crear-component v-if="array != ''"  @recibir="guardarPost" :load="load" />
+            <crear-component v-if="array != ''"  @recibir="guardarPost"  />
 
             <button v-if="array== ''" class="btn btn-dark" type="button" disabled>
                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
@@ -93,8 +92,6 @@
                 body: "",
                 title: "",
 
-                load:false,
-               
                 idedit: "",
                 paginate: ["posts"],
                 recibir:null,
@@ -169,9 +166,7 @@
 
                         // Se establece un id random porque jsonplaceholder siempre devuelve como id 101
                         this.array = [obj, ...this.array]; //response.data.response
-                        this.load = false
                         $("#modalcrear").modal("hide");
-
                         value.titleCrear= "";
                         value.bodyCrear = ""
                     })

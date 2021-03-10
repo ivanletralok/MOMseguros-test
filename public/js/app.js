@@ -1966,7 +1966,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    load: false
+    load: true
   },
   mounted: function mounted() {
     console.log('Component mounted.');
@@ -1977,15 +1977,28 @@ __webpack_require__.r(__webpack_exports__);
         bodyCrear: null,
         titleCrear: null
       },
-      loades: false,
+      lod: true,
+      cont: 0,
       array: []
     };
   },
   methods: {
     guardarPost: function guardarPost() {
+      if (this.cont == 1) {
+        this.lod = false;
+      }
+
       this.$emit('recibir', this.datos);
-      console.log(this.loades, "loades");
-      this.load = true;
+    },
+    swit: function swit() {
+      this.cont++;
+
+      if (this.cont != 0) {
+        this.lod = true;
+        this.cont = 1;
+      }
+
+      console.log("clic a swirt");
     }
   }
 });
@@ -2132,7 +2145,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 Vue.use(vue_paginate__WEBPACK_IMPORTED_MODULE_1___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2145,7 +2157,6 @@ Vue.use(vue_paginate__WEBPACK_IMPORTED_MODULE_1___default.a);
       array: [],
       body: "",
       title: "",
-      load: false,
       idedit: "",
       paginate: ["posts"],
       recibir: null,
@@ -2249,7 +2260,6 @@ Vue.use(vue_paginate__WEBPACK_IMPORTED_MODULE_1___default.a);
         // Se establece un id random porque jsonplaceholder siempre devuelve como id 101
         _this5.array = [obj].concat(_toConsumableArray(_this5.array)); //response.data.response
 
-        _this5.load = false;
         $("#modalcrear").modal("hide");
         value.titleCrear = "";
         value.bodyCrear = "";
@@ -39340,6 +39350,12 @@ var render = function() {
           "data-bs-toggle": "modal",
           "data-bs-target": "#modalcrear",
           "data-bs-whatever": "@mdo"
+        },
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            return _vm.swit($event)
+          }
         }
       },
       [_vm._v("Crear Post")]
@@ -39432,7 +39448,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "modal-footer" }, [
-              _vm.load == true
+              !_vm.lod
                 ? _c(
                     "button",
                     {
@@ -39580,10 +39596,7 @@ var render = function() {
       _c("h2", [_vm._v("POST")]),
       _vm._v(" "),
       _vm.array != ""
-        ? _c("crear-component", {
-            attrs: { load: _vm.load },
-            on: { recibir: _vm.guardarPost }
-          })
+        ? _c("crear-component", { on: { recibir: _vm.guardarPost } })
         : _vm._e(),
       _vm._v(" "),
       _vm.array == ""
